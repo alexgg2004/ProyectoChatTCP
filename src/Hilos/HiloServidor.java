@@ -28,7 +28,7 @@ public class HiloServidor implements Runnable {
 
     private void muestraMensajes(List<PrintWriter> mensajes, String mensaje) {
         for(PrintWriter mj: mensajes) {
-            mj.println(": " + mensaje);
+            mj.println(mensaje);
         }
     }
 

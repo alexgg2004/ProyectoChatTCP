@@ -3,14 +3,19 @@ package Hilos;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HiloCliente implements Runnable {
     private BufferedReader br;
     private JTextArea ta;
+    JTextArea ta2;
+    Set<String> nombreUsuarios = new HashSet<>();
 
-    public HiloCliente(BufferedReader br, JTextArea ta) {
+    public HiloCliente(BufferedReader br, JTextArea ta, JTextArea ta2) {
         this.br = br;
         this.ta = ta;
+        this.ta2 = ta2;
     }
 
     @Override
@@ -18,7 +23,16 @@ public class HiloCliente implements Runnable {
         String mensaje;
         try {
             while((mensaje = br.readLine())!=null) {
-                ta.append(mensaje + "\n");
+                if(mensaje.startsWith("/nick")) {
+                    String nombre = mensaje.substring(5);
+                    nombreUsuarios.add(nombre);
+                    ta2.setText("");
+                    for(int i=0; i<nombreUsuarios.size(); i++) {
+                        ta2.append(nombre + "\n");
+                    }
+                } else {
+                    ta.append(mensaje + "\n");
+                }
             }
         } catch (IOException e) {
             System.out.println("Error al leer mensajes del servidor");

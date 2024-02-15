@@ -12,6 +12,7 @@ public class Cliente extends JFrame {
     private String nombreUsuario;
     private JPanel panel1;
     private JTextArea textArea1;
+    private JTextArea textArea2;
     private JTextField textField1;
     private JButton button1;
     private PrintWriter pw;
@@ -53,21 +54,26 @@ public class Cliente extends JFrame {
         pw = new PrintWriter(socket.getOutputStream(), true);
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+        pw.println("/nick" + nombreUsuario);
+
         crearInterfazChat(cliente);
 
-        HiloCliente h = new HiloCliente(br, textArea1);
+        HiloCliente h = new HiloCliente(br, textArea1, textArea2);
         Thread t = new Thread(h);
         t.start();
     }
 
     private void crearInterfazChat(Cliente cliente) {
         cliente.setContentPane(cliente.panel1);
-        cliente.setTitle("Chat");
+        cliente.setTitle("Chat TCP - (" + nombreUsuario + ")");
         cliente.setSize(875, 675);
         cliente.setVisible(true);
         cliente.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         button1 = new JButton("Enviar");
+
+        textArea1.setEditable(false);
+        textArea2.setEditable(false);
     }
 
     public Cliente() {
