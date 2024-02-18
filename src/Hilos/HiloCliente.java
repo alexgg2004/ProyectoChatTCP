@@ -3,14 +3,16 @@ package Hilos;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class HiloCliente implements Runnable {
     private BufferedReader br;
     private JTextArea ta;
     JTextArea ta2;
-    Set<String> nombreUsuarios = new HashSet<>();
+    List<String> nombreUsuarios = new ArrayList<>();
 
     public HiloCliente(BufferedReader br, JTextArea ta, JTextArea ta2) {
         this.br = br;
@@ -28,7 +30,7 @@ public class HiloCliente implements Runnable {
                     nombreUsuarios.add(nombre);
                     ta2.setText("");
                     for(int i=0; i<nombreUsuarios.size(); i++) {
-                        ta2.append(nombre + "\n");
+                        ta2.append(nombreUsuarios.get(i) + "\n");
                     }
                 } else {
                     ta.append(mensaje + "\n");
