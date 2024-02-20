@@ -1,5 +1,7 @@
 package Hilos;
 
+import Servidor.Servidor;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,12 +14,20 @@ public class HiloCliente implements Runnable {
     private BufferedReader br;
     private JTextArea ta;
     JTextArea ta2;
-    List<String> nombreUsuarios = new ArrayList<>();
+    List<String> nombreUsuarios;
 
-    public HiloCliente(BufferedReader br, JTextArea ta, JTextArea ta2) {
+    public HiloCliente(BufferedReader br, JTextArea ta, JTextArea ta2, List<String> nombreUsuarios) {
         this.br = br;
         this.ta = ta;
         this.ta2 = ta2;
+        this.nombreUsuarios = nombreUsuarios;
+    }
+
+    private void actualizarNombresUsuarios() {
+        ta2.setText("");
+        for(int i=0; i<nombreUsuarios.size(); i++) {
+            ta2.append(nombreUsuarios.get(i) + "\n");
+        }
     }
 
     @Override
@@ -28,10 +38,16 @@ public class HiloCliente implements Runnable {
                 if(mensaje.startsWith("/nick")) {
                     String nombre = mensaje.substring(5);
                     nombreUsuarios.add(nombre);
-                    ta2.setText("");
-                    for(int i=0; i<nombreUsuarios.size(); i++) {
-                        ta2.append(nombreUsuarios.get(i) + "\n");
+                    //actualizarNombresUsuarios();
+                } else if(mensaje.startsWith("/usuarios")) {
+                    String[] datos = mensaje.substring(9).split(" ");
+                    nombreUsuarios.clear();
+                    for(int i=0; i<datos.length; i++) {
+                        if(!datos[i].isEmpty()) {
+                            nombreUsuarios.add(datos[i]);
+                        }
                     }
+                    actualizarNombresUsuarios();
                 } else {
                     ta.append(mensaje + "\n");
                 }

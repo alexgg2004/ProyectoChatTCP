@@ -11,12 +11,15 @@ public class HiloServidor implements Runnable {
     private Socket socket;
     private BufferedReader br;
     private PrintWriter pw;
-    List<PrintWriter> mensajes;
+    private List<PrintWriter> mensajes;
+    private List<String> usuarios;
+    private String nombre;
 
-    public HiloServidor(Socket socket, PrintWriter pw, List<PrintWriter> mensajes) {
+    public HiloServidor(Socket socket, PrintWriter pw, List<PrintWriter> mensajes, List<String> usuarios) {
         this.socket = socket;
         this.pw = pw;
         this.mensajes = mensajes;
+        this.usuarios = usuarios;
 
         try {
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -32,18 +35,40 @@ public class HiloServidor implements Runnable {
         }
     }
 
+    private void notificarConexionUsuarios() {
+        StringBuilder usuariosConectados = new StringBuilder();
+        usuariosConectados.append("/usuarios");
+        for(int i=0; i<usuarios.size(); i++) {
+            usuariosConectados.append(" ").append(usuarios.get(i));
+        }
+        for(PrintWriter mj: mensajes) {
+            mj.println(usuariosConectados.toString());
+        }
+    }
+
     @Override
     public void run() {
         String mensaje;
 
         try {
             while((mensaje = br.readLine())!=null) {
-                System.out.println("Mensaje recibido: " + mensaje);
+                System.out.println("Mensaje recibido -> " + mensaje);
+                if(mensaje.startsWith("/nick")) {
+                    nombre = mensaje.substring(5);
+                    if(usuarios.contains(nombre)) {
+                        pw.println("Error, nombre en uso");
+                    } else {
+                        usuarios.add(nombre);
+                        notificarConexionUsuarios();
+                    }
+                }
                 muestraMensajes(mensajes, mensaje);
             }
             socket.close();
         } catch(IOException e) {
-            System.err.println("Error leyendo mensaje del cliente");
+            System.err.println("El cliente " + nombre + " se ha desconectado");
+            usuarios.remove(nombre);
+            notificarConexionUsuarios();
         }
     }
 }

@@ -15,6 +15,7 @@ import java.util.Set;
 
 public class Servidor {
     private List<PrintWriter> mensajes = new ArrayList<>();
+    public static List<String> usuarios = new ArrayList<>();
 
     public static void main(String[] args) {
         new Servidor().start(6001);
@@ -32,7 +33,7 @@ public class Servidor {
                 PrintWriter mensaje = new PrintWriter(socket.getOutputStream(), true);
                 mensajes.add(mensaje);
 
-                Thread t = new Thread(new HiloServidor(socket, mensaje, mensajes));
+                Thread t = new Thread(new HiloServidor(socket, mensaje, mensajes, usuarios));
                 t.start();
             }
         } catch (IOException e) {

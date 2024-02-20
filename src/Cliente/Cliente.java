@@ -1,6 +1,7 @@
 package Cliente;
 
 import Hilos.HiloCliente;
+import Servidor.Servidor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -56,11 +57,18 @@ public class Cliente extends JFrame {
 
         pw.println("/nick" + nombreUsuario);
 
-        crearInterfazChat(cliente);
+        String respuestaServidor = br.readLine();
 
-        HiloCliente h = new HiloCliente(br, textArea1, textArea2);
-        Thread t = new Thread(h);
-        t.start();
+        if(respuestaServidor.equals("Error, nombre en uso")) {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Elija otro");
+            crearInterfazInicio();
+            start(host, port, cliente);
+        } else {
+            crearInterfazChat(cliente);
+            HiloCliente h = new HiloCliente(br, textArea1, textArea2, Servidor.usuarios);
+            Thread t = new Thread(h);
+            t.start();
+        }
     }
 
     private void crearInterfazChat(Cliente cliente) {
