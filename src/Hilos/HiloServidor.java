@@ -55,12 +55,14 @@ public class HiloServidor implements Runnable {
                 System.out.println("Mensaje recibido -> " + mensaje);
                 if(mensaje.startsWith("/nick")) {
                     nombre = mensaje.substring(5);
-                    if(usuarios.contains(nombre)) {
-                        pw.println("Error, nombre en uso");
+                    /* if(usuarios.contains(nombre)) {
+                        pw.println("/fail");
                     } else {
                         usuarios.add(nombre);
                         notificarConexionUsuarios();
-                    }
+                    } */
+                    usuarios.add(nombre);
+                    notificarConexionUsuarios();
                 }
                 muestraMensajes(mensajes, mensaje);
             }

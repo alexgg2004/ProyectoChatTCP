@@ -1,5 +1,6 @@
 package Hilos;
 
+import Cliente.Cliente;
 import Servidor.Servidor;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class HiloCliente implements Runnable {
                 if(mensaje.startsWith("/nick")) {
                     String nombre = mensaje.substring(5);
                     nombreUsuarios.add(nombre);
-                    //actualizarNombresUsuarios();
+                    // actualizarNombresUsuarios();
                 } else if(mensaje.startsWith("/usuarios")) {
                     String[] datos = mensaje.substring(9).split(" ");
                     nombreUsuarios.clear();

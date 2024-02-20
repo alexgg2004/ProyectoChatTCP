@@ -57,7 +57,14 @@ public class Cliente extends JFrame {
 
         pw.println("/nick" + nombreUsuario);
 
-        String respuestaServidor = br.readLine();
+        System.out.println(Servidor.usuarios.size());
+
+        if(Servidor.usuarios.contains(nombreUsuario)) {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Elija otro");
+            crearInterfazInicio();
+        }
+
+        /* String respuestaServidor = br.readLine();
 
         if(respuestaServidor.equals("Error, nombre en uso")) {
             JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Elija otro");
@@ -68,7 +75,11 @@ public class Cliente extends JFrame {
             HiloCliente h = new HiloCliente(br, textArea1, textArea2, Servidor.usuarios);
             Thread t = new Thread(h);
             t.start();
-        }
+        } */
+        crearInterfazChat(cliente);
+        HiloCliente h = new HiloCliente(br, textArea1, textArea2, Servidor.usuarios);
+        Thread t = new Thread(h);
+        t.start();
     }
 
     private void crearInterfazChat(Cliente cliente) {
