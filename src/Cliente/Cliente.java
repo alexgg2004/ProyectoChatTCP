@@ -34,16 +34,16 @@ public class Cliente extends JFrame {
                 int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres salir del programa?", "Confirmar salida", JOptionPane.YES_NO_OPTION);
                 if (respuesta == JOptionPane.YES_OPTION) {
                     System.exit(0);
+                } else {
+                    nombreUsuario = JOptionPane.showInputDialog("Introduce tu nombre de usuario:");
                 }
             } else {
-                entradaValida = true;
-            }
-
-            if(nombreUsuario.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Debes ingresar un nombre de usuario. Inténtalo de nuevo.");
-                nombreUsuario = JOptionPane.showInputDialog("Introduce tu nombre de usuario:");
-            } else {
-                entradaValida = true;
+                if(nombreUsuario.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Debes ingresar un nombre de usuario. Inténtalo de nuevo.");
+                    nombreUsuario = JOptionPane.showInputDialog("Introduce tu nombre de usuario:");
+                } else {
+                    entradaValida = true;
+                }
             }
         }
     }
