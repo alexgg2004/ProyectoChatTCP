@@ -49,22 +49,22 @@ public class HiloServidor implements Runnable {
     @Override
     public void run() {
         String mensaje;
-
         try {
             while((mensaje = br.readLine())!=null) {
-                System.out.println("Mensaje recibido -> " + mensaje);
-                if(mensaje.startsWith("/nick")) {
+                if(mensaje.startsWith("/nick") && usuarios.contains(mensaje.substring(5))) {
                     nombre = mensaje.substring(5);
-                    /* if(usuarios.contains(nombre)) {
-                        pw.println("/fail");
-                    } else {
+                    System.out.println("El usuario " + nombre + " ya existe");
+                    pw.println("/fail");
+                    socket.close();
+                } else {
+                    System.out.println("Mensaje recibido -> " + mensaje);
+                    if(mensaje.startsWith("/nick")) {
+                        nombre = mensaje.substring(5);
                         usuarios.add(nombre);
                         notificarConexionUsuarios();
-                    } */
-                    usuarios.add(nombre);
-                    notificarConexionUsuarios();
+                    }
+                    muestraMensajes(mensajes, mensaje);
                 }
-                muestraMensajes(mensajes, mensaje);
             }
             socket.close();
         } catch(IOException e) {

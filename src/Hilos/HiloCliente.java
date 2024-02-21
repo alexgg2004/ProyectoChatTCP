@@ -34,25 +34,31 @@ public class HiloCliente implements Runnable {
     @Override
     public void run() {
         String mensaje;
+        boolean fallo = false;
         try {
-            while((mensaje = br.readLine())!=null) {
-                if(mensaje.startsWith("/nick")) {
-                    String nombre = mensaje.substring(5);
-                    nombreUsuarios.add(nombre);
-                    // actualizarNombresUsuarios();
-                } else if(mensaje.startsWith("/usuarios")) {
-                    String[] datos = mensaje.substring(9).split(" ");
-                    nombreUsuarios.clear();
-                    for(int i=0; i<datos.length; i++) {
-                        if(!datos[i].isEmpty()) {
-                            nombreUsuarios.add(datos[i]);
-                        }
-                    }
-                    actualizarNombresUsuarios();
+            while((mensaje = br.readLine())!=null && !fallo) {
+                if(mensaje.startsWith("/fail")) {
+                    JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Elija otro");
+                    fallo = true;
                 } else {
-                    ta.append(mensaje + "\n");
+                    if(mensaje.startsWith("/nick")) {
+                        String nombre = mensaje.substring(5);
+                        nombreUsuarios.add(nombre);
+                    } else if(mensaje.startsWith("/usuarios")) {
+                        String[] datos = mensaje.substring(9).split(" ");
+                        nombreUsuarios.clear();
+                        for(int i=0; i<datos.length; i++) {
+                            if(!datos[i].isEmpty()) {
+                                nombreUsuarios.add(datos[i]);
+                            }
+                        }
+                        actualizarNombresUsuarios();
+                    } else {
+                        ta.append(mensaje + "\n");
+                    }
                 }
             }
+            System.exit(0);
         } catch (IOException e) {
             System.out.println("Error al leer mensajes del servidor");
         }
