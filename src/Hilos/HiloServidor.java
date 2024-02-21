@@ -66,11 +66,12 @@ public class HiloServidor implements Runnable {
                     muestraMensajes(mensajes, mensaje);
                 }
             }
-            socket.close();
-        } catch(IOException e) {
             System.err.println("El cliente " + nombre + " se ha desconectado");
             usuarios.remove(nombre);
             notificarConexionUsuarios();
+            socket.close();
+        } catch(IOException e) {
+            System.err.println("Error al leer datos");
         }
     }
 }
