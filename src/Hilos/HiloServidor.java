@@ -52,6 +52,7 @@ public class HiloServidor implements Runnable {
         try {
             while((mensaje = br.readLine())!=null) {
                 if(mensaje.startsWith("/nick") && usuarios.contains(mensaje.substring(5))) {
+                    // El usuario ya existe
                     nombre = mensaje.substring(5);
                     System.out.println("El usuario " + nombre + " ya existe");
                     pw.println("/fail");
@@ -59,6 +60,7 @@ public class HiloServidor implements Runnable {
                 } else {
                     System.out.println("Mensaje recibido -> " + mensaje);
                     if(mensaje.startsWith("/nick")) {
+                        // Conexión de un cliente
                         nombre = mensaje.substring(5);
                         usuarios.add(nombre);
                         notificarConexionUsuarios();

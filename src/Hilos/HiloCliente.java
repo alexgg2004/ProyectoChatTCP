@@ -38,13 +38,16 @@ public class HiloCliente implements Runnable {
         try {
             while((mensaje = br.readLine())!=null && !fallo) {
                 if(mensaje.startsWith("/fail")) {
+                    // El nombre de usuario introducido ya existe
                     JOptionPane.showMessageDialog(null, "El nombre de usuario ya está en uso. Elija otro");
                     fallo = true;
                 } else {
                     if(mensaje.startsWith("/nick")) {
+                        // Conexión del cliente
                         String nombre = mensaje.substring(5);
                         nombreUsuarios.add(nombre);
                     } else if(mensaje.startsWith("/usuarios")) {
+                        // Recoge la lista de usuarios actualizada y la muestra
                         String[] datos = mensaje.substring(9).split(" ");
                         nombreUsuarios.clear();
                         for(int i=0; i<datos.length; i++) {

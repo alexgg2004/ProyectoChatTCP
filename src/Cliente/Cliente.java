@@ -45,6 +45,8 @@ public class Cliente extends JFrame {
                     entradaValida = true;
                 }
             }
+
+
         }
     }
 
